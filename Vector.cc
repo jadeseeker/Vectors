@@ -98,7 +98,7 @@ void Vector<T>::Push_Front(const T& rhs)
 {
 	if(count < reserved){
 		for(int i=count; i>0; i--){
-			elements[i] = elementsi[i-1];
+			elements[i] = elements[i-1];
 		}
 	}
 	else{
@@ -107,7 +107,7 @@ void Vector<T>::Push_Front(const T& rhs)
 			new (newElement + i)T(elements[i-1]);
 			elements[i-1].~T();
 		}
-		free elements;
+		free(elements);
 		elements = newElement;
 		reserved = count+1;
 	}
@@ -155,7 +155,7 @@ T& Vector<T>::Back() const
 }
 
 template <typename T>
-T& Vector<T>::operator[](size_t i) const
+T& Vector<T>::operator[](size_t i)
 {
 	return elements[i];
 }
@@ -326,5 +326,10 @@ bool VectorIterator<T>::operator ==(const VectorIterator<T>& rhs) const
 }
 
 
-
+template <typename T>
+void Vector<T>::Reserve(size_t n)
+{
+	reserved = n;
+	elements = (T*)malloc(reserved * sizeof(T));
+}
 
